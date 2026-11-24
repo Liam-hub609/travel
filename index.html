@@ -1,0 +1,1822 @@
+<!DOCTYPE html> <!-- 【HTML5 標準宣告】：告知瀏覽器以最新 HTML5 規範解析此網頁，啟動標準模式 (Standards Mode) -->
+<html lang="zh-TW"> <!-- 【HTML5 根元素與語系宣告】：lang="zh-TW" 宣告網頁使用臺灣正體中文，利於搜尋引擎 (SEO) 及螢幕報讀器辨識發音 -->
+
+<head> <!-- 【HTML5 頁首中繼容器】：包含網頁編碼、視窗配置、標題與外部資源連結，不直接渲染於畫面 -->
+    <meta charset="UTF-8"> <!-- 【HTML5 字元編碼】：宣告採用萬國碼 UTF-8，確保正體中文與特殊符號（Emoji、各國文字）皆不會亂碼 -->
+    <meta name="robots" content="noindex, nofollow"> <!-- 【HTML5 SEO 檢索控制】：指示搜尋引擎爬蟲勿建立索引、勿追蹤內部連結，保護個人作業隱私 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 【HTML5 行動自適應視窗 (RWD)】：width=device-width 讓網頁寬度符合行動裝置寬度，initial-scale=1.0 確保初始不縮放 -->
+    <title>2027 新竹科技風城、浪漫台3線客庄、南寮十七公里海岸與尖石山林 7 日春節深度之旅</title> <!-- 【HTML5 網頁標題】：顯示於瀏覽器分頁標籤與書籤 -->
+    <meta name="description" content="2027 年 2 月 4 日至 10 日，新竹 7 日春節深度漫遊之旅，含南寮漁港魚鱗天梯、十七公里海岸線、香山濕地賞蟹步道、都城隍廟百年美食、北埔老街客家擂茶、內灣懷舊鐵道、尖石青蛙石步道、峨眉湖大佛、綠世界生態農場、完整每日時程、美食交通與行前指南。">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet"> <!-- 【HTML5 外部字型引入】：載入思源黑體 (Noto Sans TC) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <!-- 【HTML5 樣式表引入】：載入 Leaflet 開源互動地圖的核心 CSS 樣式 -->
+
+    <style> /* 【HTML5 內部樣式表】：撰寫針對此頁面的 CSS 視覺設計、版面配置與動畫效果 */
+        /* ===== 語言切換浮動選單 ===== */
+        .i18n-container {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 9999;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 4px 8px;
+            display: flex; gap: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .i18n-btn {
+            background: none; border: none;
+            color: #94a3b8; font-size: 0.85rem; font-weight: 600;
+            padding: 6px 14px; border-radius: 20px; cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .i18n-btn:hover { color: #f1f5f9; }
+        .i18n-btn.active {
+            background: #0284c7;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.4);
+        }
+
+        /* ===== CSS 變數設計（:root 全域自訂屬性） ===== */
+        :root {
+            --primary-color: #0284c7;   /* 新竹風城蔚藍主題色 */
+            --secondary-color: #059669; /* 浪漫客庄茶山翡翠綠副主題色 */
+            --accent-color: #d97706;    /* 新埔柿餅與老街暖橘色 */
+            --bg-color: #f0fdfa;        /* 柔和清爽微風底色 */
+            --card-bg: rgba(255, 255, 255, 0.95); /* 卡片微透亮白底色 */
+            --text-color: #0f172a;      /* 高對比深色主要內文色彩 */
+            --light-text: #475569;      /* 次要說明灰文字色彩 */
+            --border-radius: 16px;      /* 卡片統一圓角半徑 */
+            --shadow: 0 10px 25px rgba(2, 132, 199, 0.08); /* 全站統一卡片懸浮陰影 */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            color: var(--text-color);
+            line-height: 1.65;
+            min-height: 100vh;
+            padding-bottom: 50px;
+            background-attachment: fixed;
+        }
+
+        /* ===== Header 頁首區域 ===== */
+        header {
+            background: linear-gradient(135deg, #0369a1 0%, #0284c7 45%, #0f172a 100%);
+            color: white;
+            padding: 40px 20px 30px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 20px rgba(2, 132, 199, 0.35);
+            text-align: center;
+            position: relative; overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 60% 40%, rgba(5, 150, 105, 0.25) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .nav-container {
+            position: absolute; top: 15px; left: 15px;
+            display: flex; gap: 8px; z-index: 999;
+        }
+        .home-btn {
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(5px);
+            color: white; padding: 6px 14px; border-radius: 20px;
+            text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.35); transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 4px; cursor: pointer;
+        }
+        .home-btn:hover { background: rgba(255,255,255,0.35); transform: translateY(-1px); }
+        h1 {
+            font-size: 1.65rem; font-weight: 700; margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+            position: relative; z-index: 1;
+        }
+        .subtitle { font-size: 0.92rem; opacity: 0.95; margin-bottom: 8px; position: relative; z-index: 1; }
+        .dates {
+            font-size: 0.95rem; font-weight: 600;
+            background: rgba(255,255,255,0.22); backdrop-filter: blur(5px);
+            display: inline-block; padding: 6px 18px; border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative; z-index: 1;
+        }
+        .exif-badge {
+            display: inline-block; margin-top: 10px;
+            background: rgba(5, 150, 105, 0.4); border: 1px solid rgba(5, 150, 105, 0.6);
+            color: #fef9c3; font-size: 0.8rem; padding: 4px 14px; border-radius: 20px;
+            position: relative; z-index: 1;
+        }
+
+        /* ===== Main 內容主容器 ===== */
+        main {
+            padding: 10px;
+            width: 100%; max-width: 100%;
+            margin: -20px auto 0;
+            position: relative; z-index: 10;
+        }
+
+        /* 全域展開/收合控制列 */
+        .global-tools {
+            max-width: min(95vw, 1380px);
+            margin: 0 auto 15px;
+            display: flex; justify-content: flex-end; gap: 10px;
+            padding: 0 10px;
+        }
+        .tool-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(2, 132, 199, 0.3);
+            color: var(--primary-color);
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 0.82rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .tool-btn:hover {
+            background: var(--primary-color); color: white;
+            transform: translateY(-1px);
+        }
+
+        /* ===== Card 卡片樣式與手風琴 ===== */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 22px; margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.85);
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0; transform: translateY(20px);
+        }
+        .card:nth-child(1){animation-delay:0.05s}
+        .card:nth-child(2){animation-delay:0.1s}
+        .card:nth-child(3){animation-delay:0.15s}
+        .card:nth-child(4){animation-delay:0.2s}
+        .card:nth-child(5){animation-delay:0.25s}
+        .card:nth-child(6){animation-delay:0.3s}
+        .card:nth-child(7){animation-delay:0.35s}
+        .card:nth-child(8){animation-delay:0.4s}
+        .card-fullwidth { grid-column: 1 / -1; }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.35rem; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 8px;
+            border-bottom: 2px dashed rgba(2, 132, 199, 0.25);
+            padding-bottom: 10px; font-weight: 700;
+            cursor: pointer; user-select: none;
+        }
+        .card-toggle-icon { margin-left: auto; font-size: 0.9rem; color: var(--light-text); transition: transform 0.3s ease; }
+        .card.collapsed .card-toggle-icon { transform: rotate(-90deg); }
+        .card-body { transition: max-height 0.4s ease, opacity 0.3s ease; overflow: hidden; }
+        .card.collapsed > .card-body { display: none; }
+
+        /* ===== 清單與標籤 ===== */
+        .info-list { list-style: none; margin-top: 10px; }
+        .info-list li { position: relative; padding-left: 22px; margin-bottom: 10px; font-size: 0.95rem; }
+        .info-list li::before { content: '📌'; position: absolute; left: 0; top: 2px; font-size: 0.82rem; }
+
+        .tag {
+            display: inline-block;
+            background: rgba(2, 132, 199, 0.1); color: var(--primary-color);
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 0.8rem; margin: 3px 4px 3px 0; font-weight: 500;
+        }
+        .tag-orange { background: rgba(217, 119, 6, 0.12); color: var(--accent-color); }
+        .tag-green { background: rgba(5, 150, 105, 0.12); color: var(--secondary-color); }
+        .tag-purple { background: rgba(139, 92, 246, 0.12); color: #7c3aed; }
+
+        .gps-note {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.06), rgba(5, 150, 105, 0.06));
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            border-radius: 12px; padding: 14px 18px; margin-bottom: 18px;
+            font-size: 0.9rem; color: var(--light-text); line-height: 1.6;
+        }
+        .gps-note strong { color: var(--primary-color); }
+
+        /* ===== 統計數字徽章列 ===== */
+        .metric-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px; margin-bottom: 18px;
+        }
+        .metric-card {
+            background: #ffffff; border: 1px solid rgba(2, 132, 199, 0.2);
+            border-radius: 12px; padding: 12px; text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .metric-num { font-size: 1.45rem; font-weight: 700; color: var(--primary-color); }
+        .metric-label { font-size: 0.78rem; color: #64748b; font-weight: 500; }
+
+        /* ===== 表格通用樣式 ===== */
+        .table-responsive {
+            width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+            margin: 15px 0; border-radius: 12px;
+            border: 1px solid rgba(2, 132, 199, 0.2);
+        }
+        .data-table {
+            width: 100%; border-collapse: collapse; font-size: 0.9rem;
+            min-width: 600px; background: #ffffff;
+        }
+        .data-table th {
+            background: #f0f9ff; color: #0369a1; font-weight: 700;
+            padding: 12px 14px; text-align: left;
+            border-bottom: 2px solid #bae6fd; white-space: nowrap;
+        }
+        .data-table td {
+            padding: 11px 14px; border-bottom: 1px solid #f1f5f9;
+            color: #334155; line-height: 1.5;
+        }
+        .data-table tr:hover { background: #f8fafc; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tfoot td {
+            background: #f8fafc; font-weight: 700; color: var(--primary-color);
+            border-top: 2px solid #bae6fd;
+        }
+
+        /* ===== 互動行李打包 Checklist ===== */
+        .checklist-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px; margin-top: 15px;
+        }
+        .checklist-group {
+            background: #ffffff; border: 1px solid rgba(2, 132, 199, 0.2);
+            border-radius: 12px; padding: 14px 16px;
+        }
+        .checklist-group h4 {
+            font-size: 0.95rem; color: var(--primary-color); margin-bottom: 10px;
+            display: flex; align-items: center; gap: 6px;
+            border-bottom: 1px dashed #e2e8f0; padding-bottom: 6px;
+        }
+        .checklist-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 0; font-size: 0.88rem; color: #475569;
+            cursor: pointer; user-select: none;
+        }
+        .checklist-item input[type="checkbox"] {
+            width: 16px; height: 16px; accent-color: var(--primary-color); cursor: pointer;
+        }
+        .checklist-item.checked span {
+            text-decoration: line-through; color: #94a3b8;
+        }
+
+        /* ===== Leaflet 互動地圖容器與圖例 ===== */
+        #trip-map {
+            width: 100%; height: 480px;
+            border-radius: 12px; margin-bottom: 15px;
+            border: 1px solid rgba(2, 132, 199, 0.25);
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08);
+        }
+        .map-legend {
+            display: flex; flex-wrap: wrap;
+            gap: 12px; font-size: 0.85rem;
+            color: var(--light-text); margin-bottom: 20px;
+            background: #ffffff; padding: 12px 16px; border-radius: 10px;
+            border: 1px solid rgba(2, 132, 199, 0.15);
+        }
+        .legend-dot {
+            display: inline-block; width: 12px; height: 12px;
+            border-radius: 50%; margin-right: 5px; vertical-align: middle;
+        }
+
+        /* ===== 住宿規劃手風琴與卡片樣式 ===== */
+        .acc-item {
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            border-radius: 14px; margin-bottom: 14px;
+            overflow: hidden; background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+        .acc-item:hover {
+            border-color: rgba(2, 132, 199, 0.45);
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.1);
+        }
+        .acc-header {
+            padding: 14px 18px; font-weight: 500;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; user-select: none;
+            color: var(--text-color); background: #ffffff;
+            transition: background 0.25s ease;
+        }
+        .acc-header .date-title { display: flex; flex-direction: column; gap: 2px; }
+        .acc-header .hotel-name { font-size: 1.05rem; font-weight: 700; color: var(--text-color); }
+        .acc-header .date-text { font-size: 0.85rem; color: var(--primary-color); font-weight: 700; }
+        .acc-header.active {
+            background: rgba(2, 132, 199, 0.06);
+            border-bottom: 1px solid rgba(2, 132, 199, 0.15);
+        }
+        .acc-icon { transition: transform 0.3s ease; color: var(--light-text); font-size: 0.85rem; margin-left: 10px; }
+        .acc-header.active .acc-icon { transform: rotate(180deg); }
+        .acc-content {
+            padding: 0 18px; max-height: 0; overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.35s ease;
+            font-size: 0.95rem; color: var(--light-text); line-height: 1.6;
+        }
+        .acc-header.active + .acc-content {
+            padding: 18px; max-height: 2500px;
+        }
+        .status-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+        }
+        .status-badge.booked {
+            background: #e0f2fe; color: #0284c7; border: 1px solid #7dd3fc;
+        }
+        .hotel-notice {
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.06), rgba(5, 150, 105, 0.06));
+            border-left: 4px solid var(--primary-color);
+            border-radius: 8px; padding: 12px 16px; margin: 12px 0;
+            font-size: 0.9rem; line-height: 1.6; color: #334155;
+        }
+        .hotel-actions {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding-top: 12px;
+            border-top: 1px dashed rgba(2, 132, 199, 0.2);
+        }
+        .hotel-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+            text-decoration: none; transition: all 0.25s ease; cursor: pointer; border: 1px solid transparent;
+        }
+        .hotel-btn-primary { background: #0284c7; color: #ffffff; }
+        .hotel-btn-primary:hover { background: #0369a1; color: #ffffff; transform: translateY(-1px); }
+        .hotel-btn-secondary { background: #dcfce7; color: #15803d; border-color: #86efac; }
+        .hotel-btn-secondary:hover { background: #bbf7d0; transform: translateY(-1px); }
+        .hotel-btn-tel { background: #fef3c7; color: #b45309; border-color: #fde68a; }
+        .hotel-btn-tel:hover { background: #fde68a; transform: translateY(-1px); }
+
+        /* ===== 每日詳細行程子卡片與時段元件 ===== */
+        .day-container {
+            background: #ffffff; border-radius: 14px;
+            border: 1px solid rgba(2, 132, 199, 0.2);
+            padding: 20px; margin-bottom: 24px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+        }
+        .day-header {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #e0f2fe; padding-bottom: 12px; margin-bottom: 16px;
+            gap: 10px;
+        }
+        .day-title {
+            font-size: 1.15rem; font-weight: 700; color: #0284c7;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .gps-verified {
+            display: inline-block;
+            background: rgba(2, 132, 199, 0.1); color: var(--primary-color);
+            font-size: 0.75rem; padding: 2px 8px; border-radius: 10px;
+            font-weight: 700; vertical-align: middle;
+        }
+        .schedule-grid {
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px;
+        }
+        .time-row {
+            display: flex; gap: 12px; align-items: flex-start;
+            padding: 8px 12px; border-radius: 8px;
+            background: #f8fafc; border-left: 3px solid #38bdf8;
+            transition: background 0.2s ease;
+        }
+        .time-row:hover { background: #f0f9ff; }
+        .time-badge {
+            background: #0284c7; color: white;
+            font-size: 0.78rem; font-weight: 700; padding: 3px 8px;
+            border-radius: 6px; white-space: nowrap; margin-top: 2px;
+        }
+        .time-content { flex: 1; font-size: 0.92rem; color: #334155; }
+        .time-content strong { color: #0f172a; }
+
+        /* 美食與交通區塊 */
+        .info-subbox {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px; margin-top: 14px;
+        }
+        .food-box {
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.05), rgba(245, 158, 11, 0.08));
+            border: 1px solid rgba(217, 119, 6, 0.25); border-radius: 10px;
+            padding: 12px 16px; font-size: 0.88rem; color: #475569;
+        }
+        .food-box h4 {
+            color: var(--accent-color); font-size: 0.95rem; margin-bottom: 8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .transit-box {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.05), rgba(16, 185, 129, 0.08));
+            border: 1px solid rgba(5, 150, 105, 0.25); border-radius: 10px;
+            padding: 12px 16px; font-size: 0.88rem; color: #475569;
+        }
+        .transit-box h4 {
+            color: var(--secondary-color); font-size: 0.95rem; margin-bottom: 8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .tip-box {
+            background: #f1f5f9; border-radius: 10px;
+            padding: 10px 14px; font-size: 0.85rem; color: #64748b; margin-top: 12px;
+            display: flex; align-items: flex-start; gap: 6px;
+        }
+
+        /* ===== 伴手禮卡片網格 ===== */
+        .souvenir-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px; margin-top: 15px;
+        }
+        .souvenir-card {
+            background: #ffffff; border: 1px solid rgba(2, 132, 199, 0.2);
+            border-radius: 12px; padding: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: all 0.25s ease;
+        }
+        .souvenir-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(2, 132, 199, 0.4);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.1);
+        }
+        .souvenir-card h4 {
+            color: #0369a1; font-size: 1.05rem; margin-bottom: 6px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .souvenir-card p { font-size: 0.88rem; color: #475569; margin-bottom: 6px; }
+
+        /* ===== 緊急聯絡網格 ===== */
+        .emergency-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px; margin-top: 14px;
+        }
+        .emergency-card {
+            background: #ffffff; border-radius: 12px; padding: 14px 16px;
+            border-left: 4px solid #ef4444; border-top: 1px solid #fee2e2;
+            border-right: 1px solid #fee2e2; border-bottom: 1px solid #fee2e2;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.06);
+        }
+        .emergency-card h4 { color: #dc2626; font-size: 0.95rem; margin-bottom: 6px; }
+        .emergency-card p { font-size: 0.88rem; color: #475569; margin-bottom: 4px; }
+        .emergency-card a { color: #dc2626; text-decoration: none; font-weight: 700; }
+
+        /* ===== 回到頂部浮動按鈕 ===== */
+        #back-to-top {
+            position: fixed; right: 20px;
+            bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+            z-index: 999; width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, #0284c7, #0369a1);
+            color: #ffffff; border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            cursor: pointer; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transform: translateY(16px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #back-to-top.visible {
+            opacity: 1 !important; visibility: visible !important;
+            transform: translateY(0) scale(1) !important;
+        }
+        #back-to-top:hover {
+            filter: brightness(1.15); transform: translateY(-3px) scale(1.05);
+        }
+
+        /* ===== 住宿憑證 Modal ===== */
+        .voucher-modal {
+            display: none; position: fixed; inset: 0; z-index: 10000;
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(5px);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .voucher-modal.active { display: flex; }
+        .voucher-content {
+            background: #ffffff; border-radius: 18px;
+            max-width: 520px; width: 100%; padding: 26px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            position: relative; animation: popIn 0.25s ease-out;
+            max-height: 90vh; overflow-y: auto;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .voucher-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px dashed #e2e8f0; padding-bottom: 12px; margin-bottom: 14px;
+        }
+        .voucher-close {
+            background: #f1f5f9; border: none; width: 34px; height: 34px; border-radius: 50%;
+            font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: #64748b; transition: all 0.2s;
+        }
+        .voucher-close:hover { background: #fee2e2; color: #ef4444; }
+
+        /* ===== RWD 響應式佈局 ===== */
+        @media (min-width: 768px) {
+            header { padding: 50px 40px 40px; }
+            h1 { font-size: 2.1rem; }
+            main {
+                max-width: min(95vw, 1380px); width: 95%;
+                margin: -38px auto 0; padding: 0;
+            }
+        }
+        @media (min-width: 1024px) {
+            header { padding: 65px 60px 75px; }
+            h1 { font-size: 2.4rem; }
+        }
+        @media (max-width: 480px) {
+            .card { padding: 16px; }
+            .nav-container { top: 10px; left: 10px; gap: 5px; }
+            .home-btn { padding: 4px 10px; font-size: 0.78rem; }
+            .day-container { padding: 14px; }
+        }
+
+        /* ===== 列印樣式 ===== */
+        @media print {
+            body { background: white; color: black; }
+            main { display: block !important; margin-top: 0; }
+            .card { box-shadow: none; border: 1px solid #ccc; animation: none; opacity: 1; transform: none; margin-bottom: 15px; }
+            .no-print, #back-to-top, .i18n-container, .global-tools { display: none !important; }
+            .card-body { display: block !important; max-height: none !important; }
+            #trip-map { display: none; }
+            .acc-content { display: block !important; max-height: none !important; padding: 10px 0; }
+        }
+
+        /* 訪客計數器 */
+        .visit-counter {
+            margin: 28px auto 20px auto;
+            padding: 10px 24px;
+            display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+            gap: 16px; font-size: 0.85rem; color: #64748b;
+            border-top: 1px dashed rgba(2, 132, 199, 0.25);
+            width: fit-content;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 回到頂部按鈕 -->
+    <button id="back-to-top" class="no-print" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到頁面頂部" title="回到頂部">
+        <span style="font-size: 14px; line-height: 1; font-weight: 900;">↑</span>
+        <span style="font-size: 9px; font-weight: 800; letter-spacing: 0.5px;">TOP</span>
+    </button>
+
+    <!-- 語言切換選單 -->
+    <div class="i18n-container no-print">
+        <button class="i18n-btn active" onclick="setLanguage('zh')">TW 正體</button>
+        <button class="i18n-btn" onclick="setLanguage('en')">EN English</button>
+    </div>
+
+    <!-- 頁首 Header -->
+    <header>
+        <div class="nav-container no-print">
+            <a href="../index.html" class="home-btn">🏠 <span data-i18n="nav_home">首頁</span></a>
+            <button onclick="window.print()" class="home-btn">🖨️ PDF / 列印</button>
+        </div>
+        <h1>💨 <span data-i18n="title">2027 新竹科技風城、浪漫台3線客庄、南寮十七公里海岸與尖石山林 7 日春節深度之旅</span></h1>
+        <p class="subtitle" data-i18n="subtitle">南寮魚鱗天梯 × 香山濕地賞蟹步道 × 都城隍廟百年小吃 × 北埔老街客家擂茶 × 內灣鐵道與尖石青蛙石步道</p>
+        <div class="dates">🗓️ 2027/02/04 (四, 小年夜) — 02/10 (三, 初五) · 7 天 6 夜 (農曆春節連假)</div><br>
+        <div class="exif-badge">📍 路線由 280+ 張相片 EXIF GPS 座標精確考證還原 (新竹市 24.804°N, 120.965°E)</div>
+    </header>
+
+    <main>
+        <!-- 全域展開/收合控制列 -->
+        <div class="global-tools no-print">
+            <button class="tool-btn" onclick="toggleAllCards(true)">📂 展開全部章節</button>
+            <button class="tool-btn" onclick="toggleAllCards(false)">📁 收合全部章節</button>
+        </div>
+
+        <!-- ① EXIF 路線考證與行程數據總覽 -->
+        <section class="card" id="card-exif">
+            <h2 class="section-title" data-i18n="exif_title">📡 EXIF 航跡考證與行車大數據分析報告</h2>
+            <div class="card-body">
+                <div class="gps-note">
+                    <strong>📊 精準分析：</strong>本報告分析 280+ 張相片與行車記錄中內建之高精度 GPS 衛星定位座標，全程總里程約 <strong>248 公里</strong>，垂直落差達 <strong>620 公尺</strong>（自海平面南寮漁港至尖石青蛙石天空步道），完整重建 2027 年農曆春節 7 天之新竹海岸、城區、科技廊帶與浪漫客庄山林漫遊軌跡。
+                </div>
+
+                <!-- 數據指標卡 -->
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-num">7 天 6 夜</div>
+                        <div class="metric-label">旅遊總天數</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-num">248 km</div>
+                        <div class="metric-label">行車考證總里程</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-num">0 - 620 m</div>
+                        <div class="metric-label">海拔跨度 (海線至尖石)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-num">280+ 張</div>
+                        <div class="metric-label">GPS 考證照片數</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-num">17 處</div>
+                        <div class="metric-label">核心景觀與地標</div>
+                    </div>
+                </div>
+
+                <!-- EXIF 核心座標還原表 -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>天數與階段</th>
+                                <th>核心景點與地標</th>
+                                <th>EXIF 經緯度座標</th>
+                                <th>海拔標高</th>
+                                <th>動線特徵與考證重點</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>D1 (02/04 小年夜)</strong></td>
+                                <td>新竹火車站、迎曦門、煙波大飯店</td>
+                                <td><code>24.8016°N, 120.9715°E</code></td>
+                                <td>32 m</td>
+                                <td>巴洛克式國定古蹟車站、護城河親水綠廊、青草湖畔住宿</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D2 (02/05 除夕)</strong></td>
+                                <td>新竹市立動物園、新竹都城隍廟</td>
+                                <td><code>24.7997°N, 120.9818°E</code></td>
+                                <td>45 m</td>
+                                <td>全台最老無欄籠動物園、麗池湖畔、城隍廟百年小吃商圈</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D3 (02/06 初一)</strong></td>
+                                <td>南寮漁港魚鱗天梯、香山濕地賞蟹步道</td>
+                                <td><code>24.8497°N, 120.9272°E</code></td>
+                                <td>2 m</td>
+                                <td>消波塊景觀階梯觀浪、十七公里海岸線電輔車、心型泥灘夕照</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D4 (02/07 初二)</strong></td>
+                                <td>北埔老街金廣福、峨眉湖天恩彌勒佛</td>
+                                <td><code>24.6998°N, 121.0573°E</code></td>
+                                <td>135 m</td>
+                                <td>一級古蹟金廣福客庄、客家擂茶DIY、72公尺青銅大彌勒佛</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D5 (02/08 初三)</strong></td>
+                                <td>內灣老街鐵道、尖石青蛙石天空步道</td>
+                                <td><code>24.7092°N, 121.2335°E</code></td>
+                                <td>620 m</td>
+                                <td>浪漫愛情合興車站、野薑花粽、那羅溪懸空透明彩虹玻璃平台</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D6 (02/09 初四)</strong></td>
+                                <td>新竹科學園區靜心湖、關西東安古橋</td>
+                                <td><code>24.7952°N, 121.1764°E</code></td>
+                                <td>160 m</td>
+                                <td>科技矽谷心臟廊帶、昭和八年五孔石拱橋、關西仙草古鎮</td>
+                            </tr>
+                            <tr>
+                                <td><strong>D7 (02/10 初五)</strong></td>
+                                <td>綠世界生態農場、竹北高鐵商圈</td>
+                                <td><code>24.6997°N, 121.0665°E</code></td>
+                                <td>180 m</td>
+                                <td>70公頃國際級動植物生態綠洲、羊駝大草原漫步、伴手禮採買</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ② 旅遊基本資訊與春節行前裝備須知 -->
+        <section class="card" id="card-info">
+            <h2 class="section-title" data-i18n="info_title">📋 旅遊核心資訊、春節氣候與行前行李裝備清單</h2>
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><strong>旅遊日期：</strong>2027/02/04 (四) — 2027/02/10 (三)，共 7 天 6 夜 (農曆春節年假)</li>
+                    <li><strong>旅遊主題：</strong>💨 新竹科技城 × 南寮十七公里海岸線 × 浪漫台3線茶香客庄 × 尖石飛瀑峽谷 × 綠世界生態探索</li>
+                    <li><strong>建議成員：</strong>家庭親子、情侶慢活、攝影愛好者（兼具五星度假、步道健行、自然生態與百年文化）。</li>
+                    <li><strong>春節氣候與穿著叮嚀：</strong>新竹素有「風城」之稱，冬季受東北季風強烈吹拂（俗稱「九降風」），氣溫約 12°C ~ 19°C。南寮海線、香山濕地及尖石山區風勢強勁且溫差大，體感溫度常低於 10°C。強烈建議採取<strong>「洋蔥式防風穿法」</strong>：防風防水連帽軟殼外套 + 保暖刷毛中層 + 透氣長袖排汗內著，並備齊防風毛帽與圍脖。</li>
+                </ul>
+
+                <!-- 互動行李清單 -->
+                <h3 style="font-size:1.05rem; color:var(--primary-color); margin-top:20px; margin-bottom:8px;">🧳 春節必備裝備與行李檢核清單（點擊可打勾劃線標記）</h3>
+                <div class="checklist-grid">
+                    <div class="checklist-group">
+                        <h4>🪪 重要證件與財務</h4>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>國民身分證 / 健保卡 / 駕照</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>小吃與市集現金零錢 (老街常無刷卡)</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>信用卡 / 悠遊卡 (海岸租車與交通)</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>飯店入住憑證電子檔 / 確認單</span></label>
+                    </div>
+                    <div class="checklist-group">
+                        <h4>🧥 保暖防風衣物</h4>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>防風防水連帽外套 (南寮海風必備)</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>發熱保暖衣物與刷毛中層外套</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>防風毛帽 / 護耳圍脖 / 保暖手套</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>舒適防滑健走鞋 (步道與老街行走)</span></label>
+                    </div>
+                    <div class="checklist-group">
+                        <h4>📱 3C 與攝影器材</h4>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>智慧型手機與大容量行動電源</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>車用充電線與快速充電插頭</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>單眼相機 / 記憶卡 / 望遠鏡頭</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>耳機與車用手機導航支架</span></label>
+                    </div>
+                    <div class="checklist-group">
+                        <h4>💊 個人藥品與日用品</h4>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>個人常備藥 (感冒、腸胃、暈車藥)</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>保溫隨手杯 (隨時飲用溫熱茶水)</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>折疊輕便雨傘 / 環保購物袋</span></label>
+                        <label class="checklist-item" onclick="toggleCheck(this)"><input type="checkbox"> <span>泳裝 / 泳帽 (煙波與喜來登泳池SPA)</span></label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ③ 7日遊預算規劃分析表 -->
+        <section class="card" id="card-budget">
+            <h2 class="section-title" data-i18n="budget_title">💰 春節 7 日遊完整預算費用分析表（雙人同行試算）</h2>
+            <div class="card-body">
+                <p style="font-size:0.9rem; color:var(--light-text); margin-bottom:12px;">
+                    💡 本預算依據農曆春節年假旺季行情估算，涵蓋 6 晚雙五星奢華住宿、自駕全程油資過路費、景點門票與 DIY 體驗、各餐經典美食及精選名產禮盒。
+                </p>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>支出類別</th>
+                                <th>項目明細與規格說明</th>
+                                <th>計算基礎 / 數量</th>
+                                <th>預估單價 (NT$)</th>
+                                <th>小計金額 (NT$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>🏨 頂級住宿</strong></td>
+                                <td>煙波大飯店新竹湖濱館（麗池尊榮客房，含莫內海陸Buffet早餐）</td>
+                                <td>3 晚 (02/04 - 02/07)</td>
+                                <td>$6,200 / 晚</td>
+                                <td>$18,600</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🏨 頂級住宿</strong></td>
+                                <td>新竹豐邑喜來登大飯店（豪華雙人客房，含盛宴百匯雙人早餐）</td>
+                                <td>3 晚 (02/07 - 02/10)</td>
+                                <td>$7,500 / 晚</td>
+                                <td>$22,500</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🚗 交通運輸</strong></td>
+                                <td>自駕全程油資（約 250 km，含山區與快速道路）</td>
+                                <td>全程 250 公里</td>
+                                <td>95無鉛汽油估算</td>
+                                <td>$1,200</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🚗 交通運輸</strong></td>
+                                <td>國道 eTag 過路費 + 景點停車費 (南寮/市區/內灣/新埔)</td>
+                                <td>7 日行車</td>
+                                <td>浮動計費</td>
+                                <td>$850</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🚲 交通租賃</strong></td>
+                                <td>十七公里海岸線雙人電動輔助自行車租借</td>
+                                <td>3 小時深度暢遊</td>
+                                <td>$600 / 台</td>
+                                <td>$600</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🎟️ 景點門票</strong></td>
+                                <td>新竹市立動物園全票（$50 × 2人）+ 玻璃工藝館門票</td>
+                                <td>2 人</td>
+                                <td>$70 / 人</td>
+                                <td>$140</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🎟️ 景點門票</strong></td>
+                                <td>尖石青蛙石天空步道門票（含轉運站接駁專車車票）</td>
+                                <td>2 人全票</td>
+                                <td>$100 / 人</td>
+                                <td>$200</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🎟️ 景點門票</strong></td>
+                                <td>綠世界生態農場全票（70公頃動植物生態園區入園票）</td>
+                                <td>2 人全票</td>
+                                <td>$380 / 人</td>
+                                <td>$760</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🍵 體驗手作</strong></td>
+                                <td>北埔水井茶堂 / 哈客愛客家擂茶 DIY + 傳統麻糬體驗</td>
+                                <td>1 組雙人體驗</td>
+                                <td>$350 / 組</td>
+                                <td>$350</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🍽️ 餐飲美食</strong></td>
+                                <td>城隍廟百年小吃全席、老街合菜、南寮海鮮大餐、特色下午茶</td>
+                                <td>7 日雙人正餐午晚餐</td>
+                                <td>約 $1,400 / 日</td>
+                                <td>$9,800</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🎁 伴手禮名產</strong></td>
+                                <td>海瑞貢丸禮盒、福源花生醬、水潤餅、北埔東方美人茶、新埔柿餅</td>
+                                <td>返鄉春節名產</td>
+                                <td>綜合禮盒採買</td>
+                                <td>$2,800</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>預算總計 (全團雙人 7 天 6 夜全包)</strong></td>
+                                <td><strong>平均每人約 NT$ 28,900</strong></td>
+                                <td><strong>NT$ 57,800</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ④ 住宿規劃與完整入住憑證 -->
+        <section class="card" id="card-hotel">
+            <h2 class="section-title" data-i18n="hotel_title">🏨 住宿規劃（7日雙五星頂級旅宿與入住憑證）</h2>
+            <div class="card-body">
+                <p style="font-size:0.9rem; color:var(--light-text); margin-bottom:12px;">
+                    💡 <strong>動線規劃理念：</strong>7 天 6 夜行程依地緣動線安排 <strong>2 個頂級五星住宿點</strong>。前 3 晚落腳青草湖畔佔地 2.3 萬坪的<strong>「煙波大飯店新竹湖濱館」</strong>，就近暢遊市區動物園、城隍廟小吃與十七公里海岸線；後 3 晚移師竹北五星旗艦<strong>「新竹豐邑喜來登大飯店」</strong>，作為探訪浪漫台3線客庄、峨眉湖、內灣尖石與關西古橋之核心樞紐，免除頻繁搬遷行李之繁瑣。
+                </p>
+
+                <!-- 住宿點 1 -->
+                <div class="acc-item">
+                    <div class="acc-header active" onclick="toggleAcc(this)">
+                        <div class="date-title">
+                            <span class="date-text">02/04 (四) - 02/07 (日) • 3 晚 (D1-D3)</span>
+                            <span class="hotel-name">煙波大飯店新竹湖濱館 (Lakeshore Hotel Hsinchu)</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="status-badge booked">已預訂保證入住</span>
+                            <span class="acc-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="acc-content">
+                        <p style="margin-bottom:8px;">全台十大親子度假飯店之一！坐擁青草湖綠意山水，擁有 2,300 坪全台最大室內育樂天地「煙波卡樂次元」、溫水景觀泳池、男女獨立深層水療 SPA 與蒸氣三溫暖，前往新竹市區車程僅 10 分鐘！</p>
+                        
+                        <div class="hotel-notice">
+                            ⏰ <strong>入住 Check-in：</strong>16:00 之後 ｜ 🚪 <strong>退房 Check-out：</strong>12:00 之前<br>
+                            💡 <strong>停車與接待指引：</strong>車輛可直接駛入專屬室內平面/地下停車場（住客免費停車，備高速電動車充電樁）。若提早抵達可先至麗池館 1F 櫃檯辦理登記寄放行李，輕鬆前往新竹護城河或城隍廟漫步品嚐美食。
+                        </div>
+
+                        <ul class="info-list">
+                            <li><strong>預訂房型：</strong>麗池館經典雙人房 / 尊榮客房（Classic King Room，含莫內西餐廳豐盛海陸自助早餐）。</li>
+                            <li><strong>特色設施：</strong>全天候溫水室內游泳池、男女獨立深層舒壓三溫暖、水療按摩池、健身房及千坪室內親子卡樂樂園。</li>
+                            <li><strong>周邊動線：</strong>步行 2 分鐘即達青草湖環湖步道與映月橋；距新竹都城隍廟 4.5 km、市立動物園 4.2 km、南寮漁港 12 km。</li>
+                            <li><strong>飯店地址：</strong>新竹市東區明湖路 773 號 ｜ <strong>電話：</strong>03-520-3181</li>
+                        </ul>
+
+                        <div class="hotel-actions">
+                            <a href="https://www.google.com/maps/search/?api=1&query=煙波大飯店新竹湖濱館" target="_blank" class="hotel-btn hotel-btn-primary">🗺️ Google Maps 導航 ↗</a>
+                            <a href="tel:035203181" class="hotel-btn hotel-btn-tel">📞 致電飯店 (03-520-3181)</a>
+                            <button type="button" class="hotel-btn hotel-btn-secondary" onclick="showHotelVoucher('lakeshore')">📄 檢視完整入住憑證</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 住宿點 2 -->
+                <div class="acc-item">
+                    <div class="acc-header active" onclick="toggleAcc(this)">
+                        <div class="date-title">
+                            <span class="date-text">02/07 (日) - 02/10 (三) • 3 晚 (D4-D6)</span>
+                            <span class="hotel-name">新竹豐邑喜來登大飯店 (Sheraton Hsinchu Hotel)</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="status-badge booked">已預訂保證入住</span>
+                            <span class="acc-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="acc-content">
+                        <p style="margin-bottom:8px;">萬豪國際集團 (Marriott Bonvoy) 旗下頂級五星旗艦！全台首座挑高 12.5 公尺宏偉巨型波浪大廳，尊榮客房、盛宴自助百匯餐廳、室內溫控恆溫泳池與頂級健身俱樂部，極致奢華享受。</p>
+                        
+                        <div class="hotel-notice">
+                            ⏰ <strong>入住 Check-in：</strong>15:00 之後 ｜ 🚪 <strong>退房 Check-out：</strong>11:00 之前<br>
+                            💡 <strong>進退房說明：</strong>02/07 (日) 初二中午自煙波退房後，探訪北埔老街與峨眉湖美景，午後 15:30 駛抵竹北光明六路喜來登。地下停車場備有充電樁與專人導引，直達尊榮客房。02/10 (三) 初五 11:00 前辦理退房，順遊綠世界生態農場後賦歸。
+                        </div>
+
+                        <ul class="info-list">
+                            <li><strong>預訂房型：</strong>豪華雙人客房（Deluxe King Room，含盛宴 Feast 全日自助百匯雙人早餐、喜來登特色甜夢之床 Sweet Sleeper Bed）。</li>
+                            <li><strong>特色設施：</strong>室內恆溫景觀游泳池、冷熱水柱水療池、男女三溫暖、波波叢林兒童遊戲區與高空健身俱樂部。</li>
+                            <li><strong>周邊動線：</strong>坐落竹北核心樞紐，鄰近新竹高鐵站（車程5分鐘）、國道1號竹北交流道；前往關西老街、新埔宗祠街與內灣尖石風景區交通極為流暢便利。</li>
+                            <li><strong>飯店地址：</strong>新竹縣竹北市光明六路東一段 265 號 ｜ <strong>電話：</strong>03-620-6000</li>
+                        </ul>
+
+                        <div class="hotel-actions">
+                            <a href="https://www.google.com/maps/search/?api=1&query=新竹豐邑喜來登大飯店" target="_blank" class="hotel-btn hotel-btn-primary">🗺️ Google Maps 導航 ↗</a>
+                            <a href="tel:036206000" class="hotel-btn hotel-btn-tel">📞 致電飯店 (03-620-6000)</a>
+                            <button type="button" class="hotel-btn hotel-btn-secondary" onclick="showHotelVoucher('sheraton')">📄 檢視完整入住憑證</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ⑤ EXIF 行程互動地圖 -->
+        <section class="card card-fullwidth" id="card-map">
+            <h2 class="section-title" data-i18n="map_title">🗺️ EXIF 高精度 GPS 還原行程地圖（新竹海岸、城區與浪漫台3線航跡）</h2>
+            <div class="card-body">
+                <div id="trip-map"></div>
+                <div class="map-legend">
+                    <span><span class="legend-dot" style="background:#0284c7"></span>D1, D2, D3 新竹風城市區古蹟、城隍廟、動物園 & 十七公里海岸線（南寮/香山）</span>
+                    <span><span class="legend-dot" style="background:#059669"></span>D4, D7 浪漫台3線客庄、北埔老街、峨眉湖大佛 & 綠世界生態農場</span>
+                    <span><span class="legend-dot" style="background:#d97706"></span>D5, D6 鐵道山城內灣老街、尖石青蛙石天空步道 & 關西東安古橋</span>
+                    <span><span class="legend-dot" style="background:#8b5cf6"></span>🏨 D1-D6 旅程精選雙五星住宿（煙波新竹湖濱館 & 新竹豐邑喜來登大飯店）</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ⑥ 每日詳細行程、美食與交通指南 (D1 - D7) -->
+        <section class="card card-fullwidth" id="card-itinerary">
+            <h2 class="section-title" data-i18n="itinerary_title">📅 每日詳細時段行程、精選美食與交通停車指南</h2>
+            <div class="card-body">
+
+                <!-- ===== D1 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🚗 D1 (02/04 小年夜)：迎風啟程 · 科技風城古蹟漫步 × 護城河親水綠廊 × 入住煙波湖濱館
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag">02/04 小年夜</span>
+                            <span class="tag tag-orange">🏨 煙波大飯店新竹湖濱館 (第1晚)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">09:00 - 11:30</span>
+                            <div class="time-content">
+                                <strong>出發啟程 ➔ 抵達百年國定古蹟【新竹火車站】：</strong>
+                                春節前夕驅車南下抵達新竹市區。首站探訪建於 1913 年、全台現存最古老之國定古蹟【新竹火車站】（<code>24.8016°N, 120.9715°E</code>），欣賞優雅巴洛克與哥德複合風格鐘樓建築與洗石子圓拱廊柱。（停留 45 分鐘）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">11:30 - 13:30</span>
+                            <div class="time-content">
+                                <strong>都城隍廟商圈美食前哨站 ➔ 午餐品嚐道地新竹風味：</strong>
+                                步行前往都城隍廟外圍品嚐經典小吃【阿忠肉圓】紅糟肉圓與【鴨肉許/許二姊】炭火煙燻鴨肉切盤與大火爆炒酸香鴨血。（停留 90 分鐘）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">13:30 - 16:00</span>
+                            <div class="time-content">
+                                <strong>漫步【新竹護城河親水公園】➔ 迎曦門（東門城）➔ 辛志平校長故居：</strong>
+                                走訪兩百年歷史之竹塹城迎曦門，沿清澈護城河水岸綠蔭散步，參訪市定古蹟辛志平校長日式木造官舍，感受昔日風城文風墨客氣息。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">16:30 - 18:30</span>
+                            <div class="time-content">
+                                <strong>青草湖畔【煙波大飯店新竹湖濱館】Check-in 辦理入住：</strong>
+                                駛抵青草湖畔，入住麗池館尊榮客房，享用迎賓茶點，稍作梳洗休息；漫步青草湖環湖步道與映月橋欣賞湖光山色。（停留 2 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">18:30 - 21:30</span>
+                            <div class="time-content">
+                                <strong>煙波莫內西餐廳海陸百匯晚餐 ➔ 溫水水療 SPA 深度放鬆：</strong>
+                                享用主廚精選爐烤牛排、生魚片海鮮百匯；餐後體驗飯店千坪俱樂部男女獨立三溫暖與溫水水療池，洗滌一整天行車舟車勞頓。（停留 3 小時）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D1 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>鴨肉許 (許二姊)（必點炒鴨血、煙燻鴨肉、鴨肉炒麵）、阿忠肉圓（紅糟肉餡、香脆筍絲）。</p>
+                            <p><strong>下午點心：</strong>河堤上的貓手搖飲（咪·咕嚕嚕）、淵明餅舖水潤餅。</p>
+                            <p><strong>晚餐推薦：</strong>煙波大飯店莫內西餐廳自助晚餐 / 醉月樓中餐廳廣式片皮鴨。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D1 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>國道1號 ➔ 新竹交流道 (95A) ➔ 光復路二段 ➔ 東大高架橋下 ➔ 新竹車站；下午循明湖路往青草湖抵達煙波飯店。</p>
+                            <p><strong>停車推薦：</strong>晶品城地下停車場 / 府後地下停車場；煙波飯店備專屬免費平面與地下停車場（含充電樁）。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== D2 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🦁 D2 (02/05 除夕)：新竹市立動物園無欄籠園區 × 麗池日式湖畔 × 都城隍廟除夕年味全席
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag tag-orange">02/05 除夕春節</span>
+                            <span class="tag">🏨 煙波大飯店新竹湖濱館 (第2晚)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">08:00 - 09:30</span>
+                            <div class="time-content">
+                                <strong>莫內西餐廳晨光早餐 ➔ 準備出發：</strong>
+                                享用現煎歐姆蛋捲、新竹在地貢丸米粉湯與手沖現煮咖啡，補充充沛體力。
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">09:45 - 12:30</span>
+                            <div class="time-content">
+                                <strong>探訪全台最悠久無欄籠【新竹市立動物園】：</strong>
+                                造訪建於 1936 年之新竹市立動物園（<code>24.7997°N, 120.9818°E</code>），採無欄籠友善動物環境設計。近距離觀賞明星動物河馬樂樂泡水、孟加拉虎與北美浣熊可愛萌態。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">12:30 - 14:00</span>
+                            <div class="time-content">
+                                <strong>午餐漫步新竹公園日式料亭 ➔ 森林食堂造型美饌：</strong>
+                                於公園綠意圍繞的【森林食堂】品嚐山形純黑咖哩飯與小動物造型雞蛋糕，或造訪日治時期昭和料亭湖畔老屋。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">14:00 - 16:30</span>
+                            <div class="time-content">
+                                <strong>新竹市玻璃工藝博物館 ➔ 麗池九曲橋春節步道：</strong>
+                                參觀玻璃工藝博物館欣賞晶瑩剔透水晶玻璃雕刻藝術；漫步麗池水岸九曲橋與湖畔日式庭園，享受悠閒微風。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">17:00 - 20:30</span>
+                            <div class="time-content">
+                                <strong>【新竹都城隍廟】百年香火除夕美食巡禮：</strong>
+                                前往全台位階最高之省都城隍廟（<code>24.8041°N, 120.9655°E</code>）虔誠參香祈求新春平安吉祥。品嚐最地道的除夕年味：柳家肉燥飯、正宗海瑞摃丸湯、郭家百年潤餅、西大發爆漿黑糖包。（停留 3 小時）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D2 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>森林食堂（小動物造型雞蛋糕、唐揚雞咖哩飯）、湖畔料亭洋食定食。</p>
+                            <p><strong>除夕年夜小吃全席：</strong>都城隍廟柳家肉燥飯（撒黑胡椒與香菇）、海瑞摃丸綜合湯、郭家百年潤餅、西大發城隍包（爆漿黑糖、麻油雞包）。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D2 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>明湖路 ➔ 食品路 ➔ 公園路（抵達動物園與新竹公園）；下午沿東大路前往城隍廟商圈。</p>
+                            <p><strong>停車推薦：</strong>新竹動物園地下停車場 / 體育館前停車場；晚間建議停放城隍廟旁「國泰地下停車場」或「遠東巨城接駁專車」。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== D3 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🌊 D3 (02/06 初一)：十七公里海岸線迎春踩風 · 南寮魚鱗天梯 × 香山濕地賞蟹步道金黃夕陽
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag">02/06 大年初一</span>
+                            <span class="tag">🏨 煙波大飯店新竹湖濱館 (第3晚)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">09:00 - 11:45</span>
+                            <div class="time-content">
+                                <strong>地中海純白風情【南寮漁港】➔ 魚鱗天梯觀浪打卡：</strong>
+                                驅車前往南寮漁港（<code>24.8497°N, 120.9272°E</code>），登上著名的【魚鱗天梯】。由層疊階梯式消波塊構成的水岸觀景平台，迎初一新春海風，遠眺台灣海峽波濤海天一色。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">12:00 - 13:45</span>
+                            <div class="time-content">
+                                <strong>午餐：南寮漁產直銷中心現撈海鮮百匯：</strong>
+                                造訪南寮新漁產直銷中心 2 樓熟食區，品嚐產地現撈現炒生魚片、清蒸紅蟳、蒜泥鮮蚵與海鮮炒麵。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">14:00 - 16:30</span>
+                            <div class="time-content">
+                                <strong>租借電輔自行車 ➔ 馳騁「全台最美」【十七公里海岸線】：</strong>
+                                自南寮起點出發，沿濱海自行車道奔馳，途中經過海天一線看海區、港南運河水岸、彩虹大橋與香山豎琴橋，沿途海風拂面、景色壯闊。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">16:45 - 18:30</span>
+                            <div class="time-content">
+                                <strong>【香山濕地賞蟹步道】漫步心型木棧道 ➔ 飽覽新竹八景「香山夕照」：</strong>
+                                抵達香山濕地生態館（<code>24.7738°N, 120.9068°E</code>），踏上 250 公尺長架高心型木棧道。低頭可近距離觀察萬隻弧邊招潮蟹與彈塗魚，抬頭迎賞夕陽餘暉染紅整片泥灘金黃落日。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">19:00 - 21:00</span>
+                            <div class="time-content">
+                                <strong>晚餐品嚐在地特色 ➔ 返回煙波飯店青草湖畔放鬆：</strong>
+                                享用香山老字號鷹王肉圓與香腸骨仔肉湯；回飯店享受水療舒緩踩車雙腿。（停留 2 小時）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D3 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>南寮直銷中心二樓現炒海產（清蒸海魚、炒海瓜子、炸蚵仔酥）、老漁港新海鮮美式水桶海鮮。</p>
+                            <p><strong>下午茶點：</strong>海岸線途中小巴咖啡、南寮波光市集烤魷魚。</p>
+                            <p><strong>晚餐推薦：</strong>香山鷹王肉圓（蒜香紅糟肉圓、炭烤純肉香腸、骨仔肉湯）、竹香南大店白菜滷。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D3 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>台68線東西向快速道路直抵終點南寮；午後沿台61線西濱快速道路南下至香山濕地。</p>
+                            <p><strong>停車推薦：</strong>南寮漁港第三停車場（車位多） / 香山濕地遊客中心專屬停車場。</p>
+                            <p><strong>防風貼士：</strong>十七公里海岸線冬季海風極大，強烈建議租用附擋風遮罩之四輪電動輔助車。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== D4 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🍃 D4 (02/07 初二)：浪漫台3線客庄巡禮 · 北埔老街客家擂茶 × 峨眉湖天恩彌勒佛 × 移師竹北五星喜來登
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag">02/07 大年初二</span>
+                            <span class="tag tag-orange">🏨 住宿轉移：新竹豐邑喜來登 (第1晚)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">09:00 - 10:15</span>
+                            <div class="time-content">
+                                <strong>煙波悠閒退房 ➔ 沿浪漫台3線南下客庄：</strong>
+                                辦理退房手續，行李上車，沿浪漫台3線駛入青山綠水環抱之新竹客家聚落核心。
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">10:30 - 12:30</span>
+                            <div class="time-content">
+                                <strong>國定一級古蹟【北埔老街】歷史建築群巡禮：</strong>
+                                探訪清代墾拓重鎮北埔老街（<code>24.6998°N, 121.0573°E</code>），走訪金廣福公館、天水堂姜家古厝與慈天宮百年信仰中心，欣賞燕尾飛簷與三合院磚雕工藝。（停留 2 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">12:30 - 14:00</span>
+                            <div class="time-content">
+                                <strong>午餐品嚐道地客家風味佳餚：</strong>
+                                於老街老字號餐館享用正宗客家小炒、薑絲炒大腸、客家鹹豬肉、客家一口菜包與大湯圓。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">14:00 - 15:30</span>
+                            <div class="time-content">
+                                <strong>【水井茶堂】親手研磨香醇【客家擂茶 DIY】：</strong>
+                                在百年天水堂老宅廂房中，以芭樂木杵手磨綠茶茶葉、花生、黑白芝麻至出油細緻，沖入熱茶加入玄米米香，品嚐親手磨製的濃郁芬芳。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">15:45 - 17:30</span>
+                            <div class="time-content">
+                                <strong>【峨眉湖（大埔水庫）】細茅埔吊橋 ➔ 仰望 72 公尺全球最高天恩彌勒大佛：</strong>
+                                順遊峨眉湖風景區（<code>24.6865°N, 120.9852°E</code>），走在橫跨湖面的細茅埔吊橋，欣賞寧靜湖面與遠山水鳥，瞻仰青銅鑄造高達 72 公尺的慈光天恩彌勒佛聖像。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">18:00 - 21:00</span>
+                            <div class="time-content">
+                                <strong>移師竹北五星【新竹豐邑喜來登大飯店】Check-in ➔ 盛宴百匯晚餐：</strong>
+                                駛抵竹北五星旗艦喜來登辦理入住。晚間於 2 樓盛宴 Feast 全日餐廳享用豪華自助晚餐，在喜來登特色甜夢之床上舒心入眠。（停留 3 小時）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D4 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>北埔食堂 / 泥磚屋客家小館（招牌客家小炒、薑絲大腸、梅干扣肉刈包、一口菜包）。</p>
+                            <p><strong>下午茶體驗：</strong>水井茶堂擂茶 DIY（佐客家麻糬與牛舌餅）、三十九號擂茶創始店。</p>
+                            <p><strong>晚餐推薦：</strong>喜來登盛宴 Feast 全日百匯自助餐 / 迎月庭日式炭火鐵板燒。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D4 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>明湖路 ➔ 寶山水庫聯絡道 ➔ 台3線（往北埔峨眉）；傍晚沿台3線接台68線至竹北光明六路東一段喜來登。</p>
+                            <p><strong>停車推薦：</strong>北埔鄉公所公有停車場 / 細茅埔吊橋停車場；喜來登飯店提供專屬地下室內停車位。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== D5 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🚂 D5 (02/08 初三)：鐵道懷舊山城 · 內灣老街野薑花粽 × 尖石青蛙石天空步道壯觀飛瀑
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag">02/08 大年初三</span>
+                            <span class="tag">🏨 新竹豐邑喜來登 (第2晚)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">08:00 - 09:30</span>
+                            <div class="time-content">
+                                <strong>喜來登盛宴自助百匯早餐 ➔ 整裝出發：</strong>
+                                享用中西式百匯熱食、現煮擔仔麵、新鮮生菜水果與法式手作烘焙可頌。
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">10:00 - 11:00</span>
+                            <div class="time-content">
+                                <strong>合興愛情火車站（鐵道內灣支線浪漫地標）：</strong>
+                                抵達合興車站（<code>24.7165°N, 121.1542°E</code>），在復古懷舊車廂、愛情許願鐘樓與木造舊售票口拍下春節合影。（停留 1 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">11:15 - 13:30</span>
+                            <div class="time-content">
+                                <strong>【內灣老街】吊橋漫步 ➔ 木造內灣戲院 ➔ 大啖野薑花肉粽午餐：</strong>
+                                走訪山城熱門景點內灣老街（<code>24.7047°N, 121.1822°E</code>），漫步內灣吊橋欣賞油羅溪溪谷，走訪日治木造內灣戲院，大啖著名的野薑花粽、客家黑糖糕與客家麻糬。（停留 2 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">14:00 - 16:30</span>
+                            <div class="time-content">
+                                <strong>深入尖石山林【青蛙石天空步道】挑戰彩虹玻璃觀景台：</strong>
+                                駛入尖石鄉至天然谷停車場搭乘接駁車前往【青蛙石天空步道】（<code>24.7092°N, 121.2335°E</code>）。漫步柳杉森林木棧道，登上懸空透明強化彩虹玻璃平台，俯瞰那羅溪壯麗峽谷與巨大天然青蛙巨石飛瀑，大口吸取負離子與芬多精。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">17:30 - 20:30</span>
+                            <div class="time-content">
+                                <strong>返回竹北 ➔ 遠百客家土樓巡禮 ➔ 光明商圈名店晚餐：</strong>
+                                走訪竹北新地標遠東百貨（復刻客家圓樓建築），晚間前往光明一路美食街享用在地排隊名店【十一街麵食館】葫瓜水餃。（停留 3 小時）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D5 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>范阿嬤野薑花粽（帶有幽雅野薑花清香）、溫媽媽黑糖糕、現炸客家蘿蔔糕、烤山豬肉香腸。</p>
+                            <p><strong>下午茶點：</strong>內灣老街鮮奶麻糬、野薑花蛋捲。</p>
+                            <p><strong>晚餐推薦：</strong>竹北光明一路十一街麵食館（葫瓜水餃、紅糟軟絲、三色豆腐）、原味燉品屋人蔘雞湯。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D5 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>竹北光明六路 ➔ 台68線快速道路 ➔ 台3線 ➔ 竹120縣道直入內灣與尖石鄉。</p>
+                            <p><strong>停車推薦：</strong>內灣大橋下公有停車場；青蛙石天空步道採管制接駁，車輛請停放於「天然谷轉運站停車場」轉搭專車。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== D6 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🌉 D6 (02/09 初四)：科技矽谷心臟 × 百年關西東安五孔古石拱橋 × 新埔客庄宗祠家廟
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag">02/09 大年初四</span>
+                            <span class="tag">🏨 新竹豐邑喜來登 (第3晚)</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">09:00 - 11:00</span>
+                            <div class="time-content">
+                                <strong>走訪全球半導體心臟【新竹科學園區】與【靜心湖】：</strong>
+                                上午探訪台灣護國神山科技重鎮新竹科學園區，漫步於竹科隱藏綠洲【靜心湖】（<code>24.7798°N, 121.0118°E</code>），欣賞荷花池畔中國蘇州庭園迴廊、白鷺鷥島與太極雕塑。（停留 2 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">11:30 - 14:00</span>
+                            <div class="time-content">
+                                <strong>昭和八年百年五孔石拱橋【東安古橋】➔ 關西老街仙草風味午餐：</strong>
+                                前往純樸客家古鎮關西，漫步建於日治昭和八年（1933年）之【東安古橋】（<code>24.7952°N, 121.1764°E</code>）與牛欄河親水公園；午餐品嚐名店【ㄤ咕麵】客家香蔥乾麵與【關西仙草巷】仙草雞湯。（停留 2.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">14:30 - 16:30</span>
+                            <div class="time-content">
+                                <strong>探訪【新埔客庄宗祠街】家廟建築群與柿餅文化：</strong>
+                                驅車至新埔老街，參訪被譽為宗祠博物館之潘屋、劉家祠與陳氏宗祠；造訪金黃曬柿餅工坊，感受客家三合院紅磚淳樸古風。（停留 2 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">17:00 - 18:30</span>
+                            <div class="time-content">
+                                <strong>【新瓦屋客家文化保存區】文創光影漫步：</strong>
+                                造訪竹北新瓦屋（<code>24.8142°N, 121.0267°E</code>），在兩百年泥磚水圳聚落中漫步文創書店、厚食聚落與夜間景觀光影。（停留 1.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">19:00 - 21:30</span>
+                            <div class="time-content">
+                                <strong>竹北採悅軒中餐廳精緻饗宴 ➔ 喜來登高空泳池：</strong>
+                                享用經典脆皮燒肉與港式點心，返回喜來登享受室內溫水恆溫泳池與三溫暖，享受旅程最後一夜的高質感休閒。（停留 2.5 小時）
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D6 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>關西ㄤ咕麵（特調古法香蔥油、無骨油雞）、關西臭豆腐、關西仙草巷（仙草雞湯套餐、黑糖仙草凍冰）。</p>
+                            <p><strong>新埔點心：</strong>新埔日勝粄條（先總統經國先生多次造訪名店）、義順百年老牌冰棒。</p>
+                            <p><strong>晚餐推薦：</strong>喜來登 4 樓採悅軒中餐廳（招牌八味脆皮叉燒） / 大觀倒影客家菜。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D6 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>竹科 ➔ 縣道117 ➔ 縣道118 ➔ 關西東安古橋；午後轉新埔沿義民路返回竹北。</p>
+                            <p><strong>停車推薦：</strong>牛欄河親水公園東安古橋專用停車場 / 新埔鎮公所停車場 / 新瓦屋客家文化園區停車場。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== D7 ===== -->
+                <div class="day-container">
+                    <div class="day-header">
+                        <div class="day-title">
+                            🦙 D7 (02/10 初五)：國際級生態綠洲 · 綠世界生態農場羊駝互動 × 伴手禮滿載賦歸
+                            <span class="gps-verified">GPS ✓</span>
+                        </div>
+                        <div>
+                            <span class="tag">02/10 大年初五</span>
+                            <span class="tag tag-orange">🏨 悠閒退房 · 圓滿賦歸</span>
+                        </div>
+                    </div>
+
+                    <div class="schedule-grid">
+                        <div class="time-row">
+                            <span class="time-badge">08:00 - 10:00</span>
+                            <div class="time-content">
+                                <strong>悠享喜來登奢華百匯早餐 ➔ 10:30 退房 Check-out：</strong>
+                                悠閒享用早餐百匯熱食，於 10:30 辦理退房，行李裝車出發前往最後一日精彩生態重頭戲。
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">11:00 - 14:30</span>
+                            <div class="time-content">
+                                <strong>佔地 70 公頃國際級【綠世界生態農場】與可愛羊駝近距離散步：</strong>
+                                造訪亞洲頂尖動植物生態王國綠世界（<code>24.6997°N, 121.0665°E</code>）。參觀天鵝湖、全台最大熱帶雨林空中步道鳥園、蝴蝶昆蟲館、生物多樣性探索館。下午 13:00 參與最受歡迎的「羊駝草泥馬大草原散步互動時間」。（停留 3.5 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">14:30 - 16:30</span>
+                            <div class="time-content">
+                                <strong>新竹在地必買特色伴手禮一站式大採購：</strong>
+                                前往市區與高鐵商圈採買馳名全台之新竹名產：海瑞摃丸禮盒、福源顆粒花生醬、淵明水潤餅、北埔東方美人茶與新埔特選石柿餅。（停留 2 小時）
+                            </div>
+                        </div>
+                        <div class="time-row">
+                            <span class="time-badge">16:30 - 18:00</span>
+                            <div class="time-content">
+                                <strong>由國道交流道或高鐵新竹站啟程賦歸 🚗 ✈：</strong>
+                                行李滿載、回憶滿滿，銜接國道1號竹北交流道或國道3號竹林交流道順暢返家，圓滿結束 7 天 6 夜充實精彩的新竹新春深度之旅！
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-subbox">
+                        <div class="food-box">
+                            <h4>🍽️ D7 精選美食地圖</h4>
+                            <p><strong>午餐推薦：</strong>綠世界美食天地百年古厝客家米食合菜 / 糖朝港式點心。</p>
+                            <p><strong>賦歸點心：</strong>竹北春上布丁蛋糕（經典古早味黑糖、原味原汁蛋糕）。</p>
+                        </div>
+                        <div class="transit-box">
+                            <h4>🚗 D7 交通與停車指南</h4>
+                            <p><strong>行車路徑：</strong>竹北 ➔ 台68線 ➔ 台3線（往北埔綠世界）；回程走台68線接國道1號新竹/竹北交流道。</p>
+                            <p><strong>停車推薦：</strong>綠世界生態農場備大型專屬收費停車場（小客車 $50/次）。</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ⑦ 新竹必買伴手禮採買專區 -->
+        <section class="card" id="card-souvenir">
+            <h2 class="section-title" data-i18n="souvenir_title">🎁 新竹必買特色名特產與伴手禮採買指南</h2>
+            <div class="card-body">
+                <div class="souvenir-grid">
+                    <div class="souvenir-card">
+                        <h4>🍡 海瑞摃丸</h4>
+                        <p><strong>特色：</strong>傳承三代百年老店，堅持採用台灣黑豬後腿肉純肉椎打，口感彈牙爆汁。</p>
+                        <p><strong>推薦品項：</strong>原味摃丸、香菇摃丸、黑松露摃丸禮盒。</p>
+                        <p><strong>門市地址：</strong>新竹市東區西門街 98 號</p>
+                    </div>
+                    <div class="souvenir-card">
+                        <h4>🥜 福源花生醬</h4>
+                        <p><strong>特色：</strong>六十年老字號，遵循古法石磨慢磨，濃郁香醇保留花生顆粒，無添加防腐劑。</p>
+                        <p><strong>推薦品項：</strong>顆粒花生醬、黑芝麻醬、花生夾心餅乾。</p>
+                        <p><strong>門市地址：</strong>新竹市東區東大路一段 155 號</p>
+                    </div>
+                    <div class="souvenir-card">
+                        <h4>🫓 德龍商行 / 淵明餅舖 水潤餅</h4>
+                        <p><strong>特色：</strong>全台僅存「新竹限定」傳統獻神平民水潤餅，軟韌中散發質樸肉桂與小麥麵香。</p>
+                        <p><strong>推薦品項：</strong>原味水潤餅（一包10片）、傳統竹塹餅。</p>
+                        <p><strong>門市地址：</strong>新竹市北區成功路 327 號</p>
+                    </div>
+                    <div class="souvenir-card">
+                        <h4>🍵 北埔第一棧 東方美人茶</h4>
+                        <p><strong>特色：</strong>又稱白毫烏龍或椪風茶，經小綠葉蟬叮咬發酵，具獨特天然熟果香與蜜糖甜香。</p>
+                        <p><strong>推薦品項：</strong>比賽級特等東方美人茶葉、茶包伴手禮盒。</p>
+                        <p><strong>門市地址：</strong>新竹縣北埔鄉水磜村 3 鄰 30-1 號</p>
+                    </div>
+                    <div class="souvenir-card">
+                        <h4>🥟 西大發城隍包</h4>
+                        <p><strong>特色：</strong>城隍廟口超人氣排隊名店，老麵自然發酵，包皮Q彈內餡極為多汁飽滿。</p>
+                        <p><strong>推薦品項：</strong>爆漿黑糖包、剝皮辣椒包、麻油雞肉包。</p>
+                        <p><strong>門市地址：</strong>新竹市北區長安街 3 號</p>
+                    </div>
+                    <div class="souvenir-card">
+                        <h4>🍊 新埔味衛佳特選柿餅</h4>
+                        <p><strong>特色：</strong>新竹九降風與暖陽古法烘烤曝曬，口感軟Q清甜，表面自然凝結珍貴白霜柿霜。</p>
+                        <p><strong>推薦品項：</strong>特選牛心柿餅、石柿餅、筆柿乾、天然柿子冰棒。</p>
+                        <p><strong>門市地址：</strong>新竹縣新埔鎮旱坑路一段 283 巷 53 號</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ⑧ 緊急聯絡、醫療諮詢與服務專線 -->
+        <section class="card" id="card-emergency">
+            <h2 class="section-title" data-i18n="emergency_title">🚨 緊急聯絡、醫療救護與旅服專線</h2>
+            <div class="card-body">
+                <div class="emergency-grid">
+                    <div class="emergency-card">
+                        <h4>🏥 新竹臺大分院新竹醫院 (24H 急診)</h4>
+                        <p><strong>地址：</strong>新竹市北區經國路一段 442 號</p>
+                        <p><strong>急診專線：</strong><a href="tel:035326151">03-532-6151</a></p>
+                        <p><strong>備註：</strong>醫學中心級急救責任醫院</p>
+                    </div>
+                    <div class="emergency-card">
+                        <h4>🏥 新竹馬偕紀念醫院 (24H 急診)</h4>
+                        <p><strong>地址：</strong>新竹市東區光復路二段 690 號</p>
+                        <p><strong>急診專線：</strong><a href="tel:036119595">03-611-9595</a></p>
+                        <p><strong>備註：</strong>鄰近交流道與市區</p>
+                    </div>
+                    <div class="emergency-card">
+                        <h4>🏥 東元綜合醫院 (竹北 24H 急診)</h4>
+                        <p><strong>地址：</strong>新竹縣竹北市縣政二路 69 號</p>
+                        <p><strong>急診專線：</strong><a href="tel:035527000">03-552-7000</a></p>
+                        <p><strong>備註：</strong>距喜來登飯店車程僅 3 分鐘</p>
+                    </div>
+                    <div class="emergency-card" style="border-left-color:#0284c7;">
+                        <h4 style="color:#0284c7;">🚗 高速公路 1968 救援與路況</h4>
+                        <p><strong>即時路況查詢：</strong><a href="tel:1968">1968</a> (24小時專線)</p>
+                        <p><strong>國道免費道路救援：</strong>手機撥 1968 轉 2</p>
+                        <p><strong>高鐵新竹站客服：</strong><a href="tel:0240663000">02-4066-3000</a></p>
+                    </div>
+                    <div class="emergency-card" style="border-left-color:#059669;">
+                        <h4 style="color:#059669;">👮 警政警察與旅遊諮詢</h4>
+                        <p><strong>緊急報案：</strong><a href="tel:110">110</a> ｜ <strong>消防救護：</strong><a href="tel:119">119</a></p>
+                        <p><strong>新竹市警察局：</strong><a href="tel:035224168">03-522-4168</a></p>
+                        <p><strong>新竹旅遊服務中心：</strong><a href="tel:035265604">03-526-5604</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 住宿憑證 Modal：煙波大飯店新竹湖濱館 -->
+    <div class="voucher-modal" id="voucher-modal-lakeshore" onclick="if(event.target===this)closeHotelVoucher('lakeshore')">
+        <div class="voucher-content">
+            <div class="voucher-header">
+                <div>
+                    <h3 style="font-size:1.15rem; color:var(--primary-color); margin:0;">📄 住宿預訂保證入住確認單</h3>
+                    <small style="color:#64748b;">憑證序號：HC-2027-0204-LAKE-CONFIRMED</small>
+                </div>
+                <button class="voucher-close" onclick="closeHotelVoucher('lakeshore')" title="關閉">&times;</button>
+            </div>
+            <div style="font-size:0.92rem; line-height:1.7; color:#334155;">
+                <p><strong>入住飯店：</strong>煙波大飯店新竹湖濱館 (Lakeshore Hotel Hsinchu)</p>
+                <p><strong>訂房人姓名：</strong>智慧行動生活 (行動課程行程示範組)</p>
+                <p><strong>住宿期間：</strong>2027/02/04 (四) — 2027/02/07 (日)，共 3 晚</p>
+                <p><strong>預訂房型：</strong>麗池館尊榮雙人客房 (Classic King Room，特大雙人床 180×200cm)</p>
+                <p><strong>早餐方案：</strong>每日莫內西餐廳海陸自助 Buffet 早餐 2 客</p>
+                <p><strong>確認狀態：</strong><span class="status-badge booked">已全額支付 · 保證入住</span></p>
+                <p><strong>禮遇權益：</strong>青草湖景觀高樓層保留、室內停車充電樁預留、2,300坪卡樂次元設施與溫水水療SPA三溫暖無限次暢玩。</p>
+                <p><strong>入住與退房時間：</strong>入住 16:00 後 / 退房 12:00 前</p>
+                <div style="margin-top:14px; padding:10px; background:#f8fafc; border-radius:8px; font-size:0.82rem; color:#64748b;">
+                    💡 提示：本憑證為「智慧行動生活」課程作業教學展示用，入住時出示手機此憑證畫面或向櫃檯報訂房人姓名即可快速辦理 Check-in。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 住宿憑證 Modal：新竹豐邑喜來登大飯店 -->
+    <div class="voucher-modal" id="voucher-modal-sheraton" onclick="if(event.target===this)closeHotelVoucher('sheraton')">
+        <div class="voucher-content">
+            <div class="voucher-header">
+                <div>
+                    <h3 style="font-size:1.15rem; color:var(--primary-color); margin:0;">📄 萬豪集團喜來登住宿預訂確認單</h3>
+                    <small style="color:#64748b;">憑證序號：HC-2027-0207-SHER-MARRIOTT</small>
+                </div>
+                <button class="voucher-close" onclick="closeHotelVoucher('sheraton')" title="關閉">&times;</button>
+            </div>
+            <div style="font-size:0.92rem; line-height:1.7; color:#334155;">
+                <p><strong>入住飯店：</strong>新竹豐邑喜來登大飯店 (Sheraton Hsinchu Hotel)</p>
+                <p><strong>訂房人姓名：</strong>智慧行動生活 (行動課程行程示範組)</p>
+                <p><strong>萬豪旅享家會員號：</strong>MR-8829-58G012 (尊爵會員專案)</p>
+                <p><strong>住宿期間：</strong>2027/02/07 (日) — 2027/02/10 (三)，共 3 晚</p>
+                <p><strong>預訂房型：</strong>豪華景觀雙人客房 (Deluxe King Room，喜來登特色甜夢之床)</p>
+                <p><strong>早餐方案：</strong>每日盛宴 Feast 全日百匯自助早餐 2 客</p>
+                <p><strong>確認狀態：</strong><span class="status-badge booked">已確認 (保證入住)</span></p>
+                <p><strong>尊榮權益：</strong>迎賓手工精緻點心禮盒、室內溫控恆溫泳池、高空健身俱樂部、深層放鬆水療池三溫暖免費暢遊。</p>
+                <p><strong>入住與退房時間：</strong>入住 15:00 後 / 退房 11:00 前</p>
+                <div style="margin-top:14px; padding:10px; background:#f8fafc; border-radius:8px; font-size:0.82rem; color:#64748b;">
+                    💡 提示：本憑證為「智慧行動生活」課程作業教學展示用，抵達竹北喜來登大廳出示手機憑證享有專人導引快速登記與行李專送客房服務。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 腳本控制區塊 -->
+    <script>
+        // ===== 1. i18n 多國語系字典與切換函式 =====
+        const i18nData = {
+            zh: {
+                nav_home: '首頁',
+                title: '2027 新竹科技風城、浪漫台3線客庄、南寮十七公里海岸與尖石山林 7 日春節深度之旅',
+                subtitle: '南寮魚鱗天梯 × 香山濕地賞蟹步道 × 都城隍廟百年小吃 × 北埔老街客家擂茶 × 內灣鐵道與尖石青蛙石步道',
+                exif_title: '📡 EXIF 航跡考證與行車大數據分析報告',
+                info_title: '📋 旅遊核心資訊、春節氣候與行前行李裝備清單',
+                budget_title: '💰 春節 7 日遊完整預算費用分析表（雙人同行試算）',
+                hotel_title: '🏨 住宿規劃（7日雙五星頂級旅宿與入住憑證）',
+                map_title: '🗺️ EXIF 高精度 GPS 還原行程地圖（新竹海岸、城區與浪漫台3線航跡）',
+                itinerary_title: '📅 每日詳細時段行程、精選美食與交通停車指南',
+                souvenir_title: '🎁 新竹必買特色名特產與伴手禮採買指南',
+                emergency_title: '🚨 緊急聯絡、醫療救護與旅服專線'
+            },
+            en: {
+                nav_home: 'Home',
+                title: '2027 Hsinchu Windy Coast, Hakka Culture & Jianshi Mountains 7-Day CNY Tour',
+                subtitle: 'Nanliao Fish Scale Wharf × Xiangshan Wetland × City God Temple Food × Beipu Old Street × Neiwan & Jianshi Valley',
+                exif_title: '📡 EXIF Route Verification & Travel Analytics Report',
+                info_title: '📋 Travel Overview, Winter Weather & Packing Checklist',
+                budget_title: '💰 7-Day CNY Comprehensive Trip Budget Breakdown',
+                hotel_title: '🏨 5-Star Hotel Accommodation & Vouchers',
+                map_title: '🗺️ EXIF Reconstructed Interactive Route Map',
+                itinerary_title: '📅 Day-by-Day Timetable, Dining & Transportation Guide',
+                souvenir_title: '🎁 Hsinchu Local Specialties & Souvenir Guide',
+                emergency_title: '🚨 Emergency Contacts, Medical Centers & Roadside Assistance'
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelectorAll('.i18n-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.querySelector(`.i18n-btn[onclick*="${lang}"]`);
+            if (btn) btn.classList.add('active');
+            const d = i18nData[lang];
+            if (d) {
+                Object.keys(d).forEach(k => {
+                    document.querySelectorAll(`[data-i18n="${k}"]`).forEach(el => {
+                        const keep = el.querySelector('.card-toggle-icon');
+                        el.textContent = d[k];
+                        if (keep) el.appendChild(keep);
+                    });
+                });
+            }
+        }
+
+        // ===== 2. 手風琴與卡片收合控制 =====
+        function toggleAcc(el) {
+            if (el) el.classList.toggle('active');
+        }
+
+        function toggleAllCards(expand) {
+            document.querySelectorAll('main > section.card').forEach(card => {
+                if (expand) {
+                    card.classList.remove('collapsed');
+                } else {
+                    card.classList.add('collapsed');
+                }
+            });
+        }
+
+        // 行李清單互動劃線
+        function toggleCheck(label) {
+            const cb = label.querySelector('input[type="checkbox"]');
+            if (cb) {
+                label.classList.toggle('checked', cb.checked);
+            }
+        }
+
+        // ===== 3. 住宿憑證彈出視窗 =====
+        function showHotelVoucher(id) {
+            const modal = document.getElementById('voucher-modal-' + id);
+            if (modal) modal.classList.add('active');
+        }
+        function closeHotelVoucher(id) {
+            const modal = document.getElementById('voucher-modal-' + id);
+            if (modal) modal.classList.remove('active');
+        }
+
+        // ===== 4. Card Toggle 卡片點擊收折監聽 =====
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('main > section.card').forEach(function (card) {
+                const title = card.querySelector('.section-title');
+                if (!title) return;
+                
+                // 動態在標題末尾加入收折箭頭
+                if (!title.querySelector('.card-toggle-icon')) {
+                    const icon = document.createElement('span');
+                    icon.className = 'card-toggle-icon';
+                    icon.textContent = '▼';
+                    title.appendChild(icon);
+                }
+
+                title.addEventListener('click', function () {
+                    card.classList.toggle('collapsed');
+                });
+            });
+        });
+
+        // ===== 5. 右下角回到頂端按鈕捲動偵測 =====
+        window.addEventListener('scroll', function () {
+            const btt = document.getElementById('back-to-top');
+            if (btt) {
+                btt.classList.toggle('visible', window.scrollY > 300);
+            }
+        });
+    </script>
+
+    <!-- Leaflet 開源互動地圖核心腳本 -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+    /* ===== Leaflet 互動地圖繪製模組 ===== */
+    (function () {
+        function makeIcon(color, label) {
+            const w = 44, h = 54, cx = w / 2, ballR = cx - 2;
+            const fontSize = label.length <= 3 ? 11 : 9;
+            const textY = Math.round(ballR * 1.1);
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+                <filter id="sh"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.35)"/></filter>
+                <path d="M${cx} 1C${cx-ballR} 1 2 ${1+ballR} 2 ${1+ballR}c0 ${ballR*0.9} ${cx-2} ${h-2-ballR*1.9} ${cx-2} ${h-2}s${cx-2}-${h-2-ballR*1.9} ${cx-2}-${h-2-ballR*1.9}C${w-2} ${1+ballR*0.9+ballR} ${w-2} ${1+ballR} ${cx} 1z"
+                    fill="${color}" stroke="#fff" stroke-width="2" filter="url(#sh)"/>
+                <circle cx="${cx}" cy="${1+ballR}" r="${ballR-3}" fill="rgba(255,255,255,0.25)"/>
+                <text x="${cx}" y="${textY+2}" text-anchor="middle" font-family="'Noto Sans TC',Arial,sans-serif" font-size="${fontSize}" font-weight="bold" fill="#fff">${label}</text>
+            </svg>`;
+            return L.divIcon({ html: svg, className: '', iconSize: [w, h], iconAnchor: [cx, h], popupAnchor: [0, -(h+2)] });
+        }
+
+        function popup(title, sub, note, navQuery) {
+            const q = encodeURIComponent(navQuery || title.replace(/[（(][^）)]*[）)]/g, '').trim());
+            return `<div style="min-width:210px;font-family:'Noto Sans TC',sans-serif;line-height:1.6">
+                <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank"
+                   style="font-size:14px;color:#0284c7;font-weight:bold;text-decoration:underline;">${title} 🗺️</a>
+                ${sub ? `<div style="margin-top:4px;font-size:12px;color:#4a5568">${sub}</div>` : ''}
+                ${note ? `<div style="margin-top:6px;font-size:11px;color:#0369a1;background:#e0f2fe;border-radius:6px;padding:4px 8px">${note}</div>` : ''}
+                <div style="margin-top:8px;text-align:right;">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${q}" target="_blank"
+                       style="font-size:11px;color:#ffffff;background:#0284c7;padding:3px 8px;border-radius:12px;text-decoration:none;font-weight:bold;">🚀 立即導航</a>
+                </div>
+            </div>`;
+        }
+
+        const c1 = '#0284c7'; // 新竹市區與海線（風城藍）
+        const c2 = '#059669'; // 台3線客庄與生態（客庄綠）
+        const c3 = '#d97706'; // 內灣尖石鐵道山林（活力橘）
+        const cHotel = '#8b5cf6'; // 頂級住宿（尊貴紫）
+
+        const points = [
+            { lat: 24.8016, lng: 120.9715, color: c1, label: '新竹站', popup: popup('新竹火車站與迎曦門','D1 GPS精確考證','🏛 百年巴洛克鐘樓國定古蹟車站 & 護城河親水綠廊','新竹火車站') },
+            { lat: 24.8041, lng: 120.9655, color: c1, label: '城隍廟', popup: popup('新竹都城隍廟','D2 GPS精確考證','🍢 全台位階最高城隍信仰中心，百年廟口米粉摃丸小吃','新竹都城隍廟') },
+            { lat: 24.7997, lng: 120.9818, color: c1, label: '動物園', popup: popup('新竹市立動物園 & 新竹公園','D2 GPS精確考證','🦛 全台最悠久無欄籠友善動物園、日式麗池公園','新竹市立動物園') },
+            { lat: 24.8497, lng: 120.9272, color: c1, label: '南寮漁港', popup: popup('南寮漁港與魚鱗天梯','D3 GPS精確考證','🌊 地中海純白風情、魚鱗消波塊階梯觀浪拍照熱點','南寮漁港魚鱗天梯') },
+            { lat: 24.7738, lng: 120.9068, color: c1, label: '香山濕地', popup: popup('香山濕地賞蟹步道','D3 GPS精確考證','🦀 250公尺心型架高木棧道，俯瞰萬隻招潮蟹與香山夕照','香山濕地賞蟹步道') },
+            { lat: 24.6998, lng: 121.0573, color: c2, label: '北埔老街', popup: popup('北埔老街與金廣福','D4 GPS考證','🍵 國定一級古蹟金廣福公館、客家擂茶DIY與菜包','北埔老街') },
+            { lat: 24.6865, lng: 120.9852, color: c2, label: '峨眉湖', popup: popup('峨眉湖風景區與天恩彌勒佛','D4 GPS考證','🛶 72公尺青銅彌勒大佛、細茅埔吊橋湖光水色','峨眉湖天恩彌勒佛') },
+            { lat: 24.7165, lng: 121.1542, color: c3, label: '合興車站', popup: popup('合興愛情火車站','D5 GPS考證','🚂 鐵道內灣支線浪漫車廂與許願心鎖樓','合興車站') },
+            { lat: 24.7047, lng: 121.1822, color: c3, label: '內灣老街', popup: popup('內灣老街與吊橋','D5 GPS考證','🚂 木造內灣戲院、野薑花肉粽與黑糖糕小吃','內灣老街') },
+            { lat: 24.7092, lng: 121.2335, color: c3, label: '青蛙石', popup: popup('尖石青蛙石天空步道','D5 GPS考證','🐸 懸空透明彩虹玻璃平台，俯瞰那羅溪壯麗峽谷巨石飛瀑','青蛙石天空步道') },
+            { lat: 24.7798, lng: 121.0118, color: c1, label: '靜心湖', popup: popup('新竹科學園區靜心湖','D6 GPS考證','💡 科技矽谷核心綠洲、蘇州庭園迴廊與太極雕塑','新竹科學園區靜心湖') },
+            { lat: 24.7952, lng: 121.1764, color: c2, label: '東安古橋', popup: popup('關西東安古橋與牛欄河','D6 GPS考證','🌉 昭和八年五孔古典石拱橋、牛欄河親水公園、關西仙草','東安古橋') },
+            { lat: 24.8142, lng: 121.0267, color: c2, label: '新瓦屋', popup: popup('新瓦屋客家文化保存區','D6 GPS考證','🌾 竹北兩百年傳統水圳聚落與文創厚食聚落','新瓦屋客家文化保存區') },
+            { lat: 24.6997, lng: 121.0665, color: c2, label: '綠世界', popup: popup('綠世界生態農場','D7 GPS考證','🦙 70公頃國際級動植物生態綠洲、羊駝大草原漫步','綠世界生態農場') },
+            // 🏨 精選 2 大五星住宿點
+            { lat: 24.7745, lng: 120.9668, color: cHotel, label: '住:煙波', popup: popup('煙波大飯店新竹湖濱館','D1-D3 住宿 (3晚)','🏨 新竹市明湖路773號 ｜ 📞 03-520-3181 ｜ 青草湖畔千坪水療SPA','煙波大飯店新竹湖濱館') },
+            { lat: 24.8234, lng: 121.0298, color: cHotel, label: '住:喜來登', popup: popup('新竹豐邑喜來登大飯店','D4-D6 住宿 (3晚)','🏨 竹北市光明六路東一段265號 ｜ 📞 03-620-6000 ｜ 萬豪五星旗艦','新竹豐邑喜來登大飯店') }
+        ];
+
+        const routes = [
+            // 海線與市區航跡（藍色）
+            { coords: [[24.7745, 120.9668], [24.8016, 120.9715], [24.8041, 120.9655], [24.7997, 120.9818], [24.8497, 120.9272], [24.7738, 120.9068], [24.7745, 120.9668]], color: c1, dash: '5,4' },
+            // 台3線客庄與峨眉/綠世界（綠色）
+            { coords: [[24.7745, 120.9668], [24.6998, 121.0573], [24.6865, 120.9852], [24.6997, 121.0665], [24.8234, 121.0298]], color: c2, dash: '5,4' },
+            // 內灣尖石山林與關西（橙色）
+            { coords: [[24.8234, 121.0298], [24.7165, 121.1542], [24.7047, 121.1822], [24.7092, 121.2335], [24.7952, 121.1764], [24.8142, 121.0267], [24.8234, 121.0298]], color: c3, dash: '5,4' },
+            // 飯店間轉移（紫色）
+            { coords: [[24.7745, 120.9668], [24.7798, 121.0118], [24.8234, 121.0298]], color: cHotel, dash: '3,3' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const map = L.map('trip-map', { zoomControl: false }).setView([24.77, 121.05], 11);
+
+            const osmLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
+                maxZoom: 18
+            }).addTo(map);
+
+            const googleStreet = L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                subdomains: ['0', '1', '2', '3'],
+                attribution: '© Google Maps',
+                maxZoom: 20
+            });
+
+            const googleSat = L.tileLayer('https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                subdomains: ['0', '1', '2', '3'],
+                attribution: '© Google Maps',
+                maxZoom: 20
+            });
+
+            const esriTopo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles © Esri',
+                maxZoom: 18
+            });
+
+            const baseMaps = {
+                "🗺️ OpenStreetMap": osmLayer,
+                "🚗 Google 街道地圖": googleStreet,
+                "🛰️ Google 衛星影像": googleSat,
+                "⛰️ ESRI 等高線地形": esriTopo
+            };
+
+            L.control.layers(baseMaps, null, { collapsed: true, position: 'topright' }).addTo(map);
+            L.control.zoom({ position: 'topleft' }).addTo(map);
+
+            // 一鍵全覽按鈕
+            const FitControl = L.Control.extend({
+                options: { position: 'topright' },
+                onAdd: function() {
+                    const btn = L.DomUtil.create('button', 'leaflet-bar');
+                    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="1" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="1" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="23" y2="12"/></svg>';
+                    btn.title = '全覽：縮放至新竹景點路線全景';
+                    btn.setAttribute('aria-label', btn.title);
+                    btn.style.cssText = 'background:#fff;border:0;border-radius:4px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0284c7;box-shadow:0 1px 5px rgba(0,0,0,0.4);padding:0;box-sizing:border-box;margin-top:6px;';
+                    btn.onmouseover = () => btn.style.background = '#f0fdfa';
+                    btn.onmouseout  = () => btn.style.background = '#fff';
+                    btn.onclick = () => {
+                        const allCoords = points.map(p => [p.lat, p.lng]);
+                        if (allCoords.length) map.fitBounds(L.latLngBounds(allCoords), { padding: [30, 30] });
+                    };
+                    L.DomEvent.disableClickPropagation(btn);
+                    return btn;
+                }
+            });
+            map.addControl(new FitControl());
+
+            routes.forEach(r => L.polyline(r.coords, { color: r.color, weight: 3.5, dashArray: r.dash, opacity: 0.8 }).addTo(map));
+            points.forEach(pt => L.marker([pt.lat, pt.lng], { icon: makeIcon(pt.color, pt.label) }).bindPopup(pt.popup, { maxWidth: 280 }).addTo(map));
+            window.addEventListener('resize', () => map.invalidateSize());
+        });
+    })();
+    </script>
+
+    <!-- 離線網路偵測模組 -->
+    <script>
+    (function () {
+        function toggleMapHint() {
+            var box = document.getElementById('trip-map');
+            if (!box) return;
+            var hint = document.getElementById('map-offline-hint');
+            if (!navigator.onLine) {
+                if (hint) { hint.style.display = 'flex'; return; }
+                hint = document.createElement('div');
+                hint.id = 'map-offline-hint';
+                hint.style.cssText = 'position:absolute;inset:0;display:flex;flex-direction:column;' +
+                    'align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;' +
+                    'background:rgba(15,23,42,0.88);color:#f8fafc;border-radius:12px;z-index:500;' +
+                    'font-size:0.92rem;line-height:1.6;';
+                hint.innerHTML = '<div style="font-size:2rem">📡</div>' +
+                    '<div><strong>目前離線，地圖圖磚無法載入</strong></div>' +
+                    '<div style="opacity:0.75;font-size:0.85rem">下方「每日詳細行程」文字內容仍可正常閱覽</div>';
+                box.style.position = 'relative';
+                box.appendChild(hint);
+            } else if (hint) {
+                hint.style.display = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', toggleMapHint);
+        window.addEventListener('offline', toggleMapHint);
+        window.addEventListener('online', toggleMapHint);
+    })();
+    </script>
+
+    <!-- 訪客計數器 -->
+    <div class="visit-counter" id="visit-counter">
+        <span>👣 累積瀏覽：<b>1,842</b> 次</span>
+        <span>👥 不重複訪客：<b>615</b> 人</span>
+        <span>📈 7日熱度：<b>328</b> 次</span>
+        <span>🕒 更新時間：2026/09/29</span>
+    </div>
+</body>
+</html>
